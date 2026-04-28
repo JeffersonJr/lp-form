@@ -10,10 +10,13 @@ const V2 = () => {
   const [userData, setUserData] = useState(null);
   const [showToast, setShowToast] = useState(false);
 
-  const handleQualification = (data) => {
+  const handleQualification = async (data) => {
     setUserData(data);
     setLoading(true);
-    sendLeadToEndpoint(data);
+    
+    // Ensuring the lead is sent before redirecting
+    await sendLeadToEndpoint(data);
+    
     setTimeout(() => {
       localStorage.setItem('dornelas_qualified', 'true');
       localStorage.setItem('dornelas_user_data', JSON.stringify(data));
