@@ -48,7 +48,11 @@ const StepForm = () => {
           />
           <div className="grid grid-cols-2 gap-4">
             <button
-              onClick={() => { setFormData({...formData, objective: 'Moradia'}); nextStep(); }}
+              onClick={() => { 
+                setFormData({...formData, objective: 'Moradia'}); 
+                sendLeadToEndpoint({...formData, objective: 'Moradia', partial: true}).catch(e => console.error(e));
+                nextStep(); 
+              }}
               className={`p-8 rounded-2xl border-2 transition-all flex flex-col items-center gap-4 ${formData.objective === 'Moradia' ? 'border-brand-deepblue bg-brand-deepblue/5' : 'border-gray-100 hover:border-brand-deepblue/30'}`}
             >
               <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
@@ -57,7 +61,11 @@ const StepForm = () => {
               <span className="font-medium">Moradia</span>
             </button>
             <button
-              onClick={() => { setFormData({...formData, objective: 'Investimento'}); nextStep(); }}
+              onClick={() => { 
+                setFormData({...formData, objective: 'Investimento'}); 
+                sendLeadToEndpoint({...formData, objective: 'Investimento', partial: true}).catch(e => console.error(e));
+                nextStep(); 
+              }}
               className={`p-8 rounded-2xl border-2 transition-all flex flex-col items-center gap-4 ${formData.objective === 'Investimento' ? 'border-brand-deepblue bg-brand-deepblue/5' : 'border-gray-100 hover:border-brand-deepblue/30'}`}
             >
               <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">

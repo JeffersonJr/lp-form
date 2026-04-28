@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sendLeadToEndpoint } from '../../../utils/leads';
 
 const Gatekeeper = ({ onComplete }) => {
   const [step, setStep] = useState(0);
   const [data, setData] = useState({
     name: '',
     whatsapp: '',
+    email: '',
     intention: '',
     cashValue: '',
     incomeType: '',
@@ -38,6 +40,16 @@ const Gatekeeper = ({ onComplete }) => {
               className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
               value={data.whatsapp}
               onChange={(e) => setData({ ...data, whatsapp: formatPhone(e.target.value) })}
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Seu melhor e-mail</label>
+            <input
+              type="email"
+              placeholder="seu@email.com"
+              className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
+              value={data.email}
+              onChange={(e) => setData({ ...data, email: e.target.value })}
             />
           </div>
         </div>
@@ -139,6 +151,11 @@ const Gatekeeper = ({ onComplete }) => {
   const steps = getSteps();
 
   const handleNext = () => {
+    // Partial capture: send lead after contact info step (step 0)
+    if (step === 0) {
+      sendLeadToEndpoint({ ...data, partial: true }).catch(err => console.error('Partial send failed:', err));
+    }
+
     if (step < steps.length - 1) {
       setStep(step + 1);
     } else {
@@ -233,7 +250,7 @@ const Gatekeeper = ({ onComplete }) => {
                   <button
                     onClick={handleNext}
                     disabled={
-                      (step === 0 && (!data.name || data.whatsapp.length < 14)) ||
+                      (step === 0 && (!data.name || data.whatsapp.length < 14 || !data.email)) ||
                       (currentStep.key === 'cashValue' && !data.cashValue) ||
                       (currentStep.key === 'investmentAmount' && !data.investmentAmount)
                     }
