@@ -178,7 +178,9 @@ const Gatekeeper = ({ onComplete }) => {
     <div className="max-w-2xl mx-auto px-6 py-6 md:py-12 min-h-screen flex flex-col">
       <header className="mb-12">
         <img src="/logo.svg" alt="Logo" className="h-10 mb-8" />
-        <h1 className="text-2xl font-bold text-brand-deepblue mb-2">Olá, que bom te ver por aqui!</h1>
+        <h1 className="text-2xl font-bold text-brand-deepblue mb-2">
+          Olá{data.name ? `, ${data.name.split(' ')[0]}` : ''}, que bom te ver por aqui!
+        </h1>
         <p className="text-gray-500">Sou Dornelas Corretor, preparamos algo especial para você.</p>
       </header>
 

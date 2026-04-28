@@ -3,14 +3,19 @@ import Gatekeeper from './components/Gatekeeper';
 import PropertyDetails from './components/PropertyDetails';
 
 const V2 = () => {
-  const [isQualified, setIsQualified] = useState(false);
+  const [isQualified, setIsQualified] = useState(() => localStorage.getItem('dornelas_qualified') === 'true');
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState(() => {
+    const saved = localStorage.getItem('dornelas_user_data');
+    return saved ? JSON.parse(saved) : null;
+  });
 
   const handleQualification = (data) => {
     setUserData(data);
     setLoading(true);
     setTimeout(() => {
+      localStorage.setItem('dornelas_qualified', 'true');
+      localStorage.setItem('dornelas_user_data', JSON.stringify(data));
       setIsQualified(true);
       setLoading(false);
       window.scrollTo(0, 0);
