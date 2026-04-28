@@ -14,7 +14,7 @@ const Gatekeeper = ({ onComplete }) => {
 
   const steps = [
     {
-      question: "Para começar, como podemos te chamar?",
+      question: "Confirme seus dados de contato",
       fields: (
         <div className="space-y-6">
           <div className="space-y-2">
@@ -128,10 +128,10 @@ const Gatekeeper = ({ onComplete }) => {
 
       <div className="flex-1">
         <div className="mb-4 flex justify-between items-end">
-           <span className="text-xs font-bold uppercase tracking-widest text-brand-deepblue">Passo {step + 1} de {steps.length}</span>
-           <div className="h-1.5 w-24 bg-gray-100 rounded-full overflow-hidden">
-              <div className="h-full bg-brand-deepblue transition-all duration-500" style={{ width: `${((step + 1) / steps.length) * 100}%` }} />
-           </div>
+          <span className="text-xs font-bold uppercase tracking-widest text-brand-deepblue">Passo {step + 1} de {steps.length}</span>
+          <div className="h-1.5 w-24 bg-gray-100 rounded-full overflow-hidden">
+            <div className="h-full bg-brand-deepblue transition-all duration-500" style={{ width: `${((step + 1) / steps.length) * 100}%` }} />
+          </div>
         </div>
 
         <AnimatePresence mode="wait">
@@ -177,7 +177,7 @@ const Gatekeeper = ({ onComplete }) => {
                     disabled={!(data.name.length >= 3 && data.whatsapp.length >= 14)}
                     className="w-full py-5 bg-brand-deepblue hover:bg-brand-accent text-white rounded-xl font-bold text-lg shadow-2xl shadow-brand-deepblue/20 disabled:opacity-40 disabled:shadow-none transition-all active:scale-[0.98]"
                   >
-                    Continuar para detalhes
+                    Próximo passo
                   </button>
                   {!(data.name.length >= 3 && data.whatsapp.length >= 14) && (
                     <p className="text-center text-xs text-red-400 mt-4">
