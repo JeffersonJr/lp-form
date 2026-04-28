@@ -3,10 +3,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const ENDPOINT = process.env.LEAD_ENDPOINT;
+  const LEAD_ENDPOINT = process.env.LEAD_ENDPOINT;
+  const NEGOCIOS_ENDPOINT = process.env.NEGOCIOS_ENDPOINT;
 
-  if (!ENDPOINT) {
-    return res.status(500).json({ message: 'Missing lead endpoint' });
+  if (!LEAD_ENDPOINT || !NEGOCIOS_ENDPOINT) {
+    return res.status(500).json({ message: 'Missing endpoints' });
   }
 
   // Capturing technical metadata
@@ -36,17 +37,29 @@ export default async function handler(req, res) {
   params.append('api_key', process.env.BUSINESS_TOKEN);
 
   try {
-    const response = await fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: params.toString(),
-    });
+    // Send to both endpoints simultaneously
+    const [leadResponse, negociosResponse] = await Promise.all([
+      fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      }),
+      fetch(NEGOCIOS_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      })
+    ]);
 
-    if (response.ok) {
-      return res.status(200).json({ message: 'Success' });
+    if (leadResponse.ok || negociosResponse.ok) {
+      return res.status(200).json({ 
+        message: 'Success', 
+        leadStatus: leadResponse.status, 
+        negociosStatus: negociosResponse.status 
+      });
     } else {
-      const errorText = await response.text();
-      return res.status(response.status).json({ message: 'Error', details: errorText });
+      const errorText = await leadResponse.text();
+      return res.status(leadResponse.status).json({ message: 'Error', details: errorText });
     }
   } catch (error) {
     console.error('Submission error:', error);
