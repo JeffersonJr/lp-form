@@ -17,10 +17,7 @@ const V2 = () => {
     setTimeout(() => {
       localStorage.setItem('dornelas_qualified', 'true');
       localStorage.setItem('dornelas_user_data', JSON.stringify(data));
-      setIsQualified(true);
-      setLoading(false);
-      setShowToast(true);
-      window.scrollTo(0, 0);
+      window.location.href = 'https://dornelasimoveispe.com.br/detalhes/imovel/casa/olinda/amparo/codigo/541';
     }, 1500);
   };
 
