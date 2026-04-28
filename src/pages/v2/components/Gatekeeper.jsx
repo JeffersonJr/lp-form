@@ -297,9 +297,12 @@ const Gatekeeper = ({ onComplete }) => {
         </AnimatePresence>
       </div>
 
-      <footer className="mt-12 text-center">
+      <footer className="mt-12 text-center space-y-4">
         <p className="text-xs text-gray-400 italic">
           * Suas informações estão seguras e serão usadas apenas para personalizar sua experiência.
+        </p>
+        <p className="text-[10px] text-gray-300 font-bold uppercase tracking-widest">
+          Desenvolvido por Microsistec
         </p>
       </footer>
     </div>
