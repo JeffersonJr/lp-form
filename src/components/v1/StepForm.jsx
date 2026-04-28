@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sendLeadToEndpoint } from '../../utils/leads';
 
 const StepForm = () => {
   const [step, setStep] = useState(1);
@@ -14,6 +15,14 @@ const StepForm = () => {
 
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    const ok = await sendLeadToEndpoint(formData);
+    if (ok) setSubmitted(true);
+    else alert('Erro ao enviar. Tente novamente.');
+  };
 
   const toggleFeature = (feature) => {
     setFormData(prev => ({
@@ -124,13 +133,30 @@ const StepForm = () => {
             value={formData.email}
             onChange={(e) => setFormData({...formData, email: e.target.value})}
           />
-          <button className="btn-primary w-full mt-6 bg-green-600 hover:bg-green-700">
+          <button 
+            onClick={handleSubmit}
+            className="btn-primary w-full mt-6 bg-green-600 hover:bg-green-700"
+          >
             Solicitar Atendimento com Dornelas
           </button>
         </div>
       )
     }
   ];
+
+  if (submitted) {
+    return (
+      <section className="py-24 bg-white text-center">
+        <div className="max-w-xl mx-auto px-6">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8">
+            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <h2 className="text-3xl font-bold mb-4">Solicitação Enviada!</h2>
+          <p className="text-gray-500">Hyago Dornelas entrará em contato com você em instantes via WhatsApp.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-24 bg-white">

@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import Gatekeeper from './components/Gatekeeper';
 import PropertyDetails from './components/PropertyDetails';
+import { sendLeadToEndpoint } from '../../utils/leads';
 
 const V2 = () => {
-  const [isQualified, setIsQualified] = useState(() => localStorage.getItem('dornelas_qualified') === 'true');
+  const [isQualified, setIsQualified] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userData, setUserData] = useState(() => {
-    const saved = localStorage.getItem('dornelas_user_data');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [userData, setUserData] = useState(null);
 
   const handleQualification = (data) => {
     setUserData(data);
     setLoading(true);
+    sendLeadToEndpoint(data);
     setTimeout(() => {
       localStorage.setItem('dornelas_qualified', 'true');
       localStorage.setItem('dornelas_user_data', JSON.stringify(data));
