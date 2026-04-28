@@ -1,8 +1,8 @@
 export const sendLeadToEndpoint = async (data) => {
-  const ENDPOINT = 'https://webhook.site/7e003c83-8a32-4e99-9834-bc010e826859';
+  const PROXY_API = '/api/leads';
   
   try {
-    const response = await fetch(ENDPOINT, {
+    const response = await fetch(PROXY_API, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ export const sendLeadToEndpoint = async (data) => {
     });
     return response.ok;
   } catch (error) {
-    console.error('Error sending lead:', error);
+    console.error('Error sending lead via proxy:', error);
     return false;
   }
 };
