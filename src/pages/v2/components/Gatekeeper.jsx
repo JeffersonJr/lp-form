@@ -45,7 +45,7 @@ const Gatekeeper = ({ onComplete }) => {
     };
 
     const intentionStep = {
-      question: "Sua intenção de compra é à vista ou financiada?",
+      question: "Sua intenção de compra",
       options: [
         { label: "À vista", value: "À vista" },
         { label: "Financiada", value: "Financiada" }
@@ -55,7 +55,7 @@ const Gatekeeper = ({ onComplete }) => {
 
     const incomeTypeStep = {
       question: "Como é sua renda?",
-      subtitle: "Selecione a forma de comprovação",
+      subtitle: "Selecione aqui",
       options: [
         { label: "Comprovada (CLT ou Imposto de Renda)", value: "Comprovada" },
         { label: "Autônomo (Apenas movimentação bancária)", value: "Autônomo" }
@@ -75,8 +75,7 @@ const Gatekeeper = ({ onComplete }) => {
     };
 
     const investmentAmountStep = {
-      question: "Qual valor você possui disponível para investimento?",
-      subtitle: "Quanto teria para entrada e documentação?",
+      question: "Qual valor você possui disponível para investimento incluindo valor de entrada e documentação?",
       fields: (
         <div className="space-y-2">
           <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Valor disponível</label>
