@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-graphite: #2D2D2D;
+  --color-brand-offwhite: #F9F9F9;
+  --color-brand-deepblue: #003366;
+  --color-brand-accent: #004080;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-brand-offwhite);
+    color: var(--color-brand-graphite);
+    font-family: var(--font-sans);
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .btn-primary {
+    background-color: var(--color-brand-deepblue);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-xl);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-brand-accent);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-xl);
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .input-field:focus {
+    box-shadow: 0 0 0 2px var(--color-brand-deepblue);
+    border-color: transparent;
+  }
+}
