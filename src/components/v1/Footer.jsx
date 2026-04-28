@@ -15,8 +15,8 @@ const Footer = () => {
           <a href="#" className="hover:text-brand-deepblue transition-colors">Termos</a>
         </div>
 
-        <div className="text-sm text-gray-400 font-medium">
-          © 2026 Dornelas Corretor. Todos os direitos reservados.
+        <div className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">
+          © 2026 Dornelas Corretor. Todos os direitos reservados. | Desenvolvido por Microsistec
         </div>
       </div>
     </footer>

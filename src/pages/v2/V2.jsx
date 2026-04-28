@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Gatekeeper from './components/Gatekeeper';
 import PropertyDetails from './components/PropertyDetails';
+import Toast from '../../components/common/Toast';
 import { sendLeadToEndpoint } from '../../utils/leads';
 
 const V2 = () => {
   const [isQualified, setIsQualified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [showToast, setShowToast] = useState(false);
 
   const handleQualification = (data) => {
     setUserData(data);
@@ -17,9 +19,17 @@ const V2 = () => {
       localStorage.setItem('dornelas_user_data', JSON.stringify(data));
       setIsQualified(true);
       setLoading(false);
+      setShowToast(true);
       window.scrollTo(0, 0);
     }, 1500);
   };
+
+  useEffect(() => {
+    if (showToast) {
+      const timer = setTimeout(() => setShowToast(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showToast]);
 
   if (loading) {
     return (
@@ -33,6 +43,7 @@ const V2 = () => {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100">
+      <Toast show={showToast} message="Perfil salvo com sucesso!" />
       {!isQualified ? (
         <Gatekeeper onComplete={handleQualification} />
       ) : (

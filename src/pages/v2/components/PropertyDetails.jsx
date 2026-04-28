@@ -423,7 +423,7 @@ const PropertyDetails = ({ userData }) => {
             </div>
           </div>
           <div className="pt-12 border-t border-gray-50 flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-gray-300 text-[9px] font-black uppercase tracking-widest">© 2024 Dornelas Corretor. Todos os direitos reservados.</p>
+            <p className="text-gray-300 text-[9px] font-black uppercase tracking-widest">© 2024 Dornelas Corretor. Todos os direitos reservados. | Desenvolvido por Microsistec</p>
             <div className="flex gap-8 text-gray-300 text-[8px] font-black uppercase tracking-widest">
               <a href="#" className="hover:text-brand-deepblue transition-all">Privacidade</a>
               <a href="#" className="hover:text-brand-deepblue transition-all">Termos</a>
