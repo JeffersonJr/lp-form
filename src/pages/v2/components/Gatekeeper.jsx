@@ -42,16 +42,6 @@ const Gatekeeper = ({ onComplete }) => {
               onChange={(e) => setData({ ...data, whatsapp: formatPhone(e.target.value) })}
             />
           </div>
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Seu melhor e-mail</label>
-            <input
-              type="email"
-              placeholder="seu@email.com"
-              className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
-              value={data.email}
-              onChange={(e) => setData({ ...data, email: e.target.value })}
-            />
-          </div>
         </div>
       ),
     };
@@ -202,9 +192,9 @@ const Gatekeeper = ({ onComplete }) => {
       </header>
 
       <div className="mb-12 aspect-video bg-gray-100 rounded-2xl overflow-hidden relative group cursor-pointer shadow-lg border border-gray-100">
-        <img 
-          src="/thumb.png" 
-          alt="Thumbnail Vídeo" 
+        <img
+          src="/thumb.png"
+          alt="Thumbnail Vídeo"
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
