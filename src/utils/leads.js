@@ -10,7 +10,8 @@ export const sendLeadToEndpoint = async (data) => {
       body: JSON.stringify({
         ...data,
         timestamp: new Date().toISOString(),
-        source: window.location.pathname
+        source: 'Instagram DM',
+        fullUrl: window.location.href
       }),
     });
     return response.ok;
