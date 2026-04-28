@@ -25,29 +25,35 @@ export default async function handler(req, res) {
     ${technicalInfo}
   `.replace(/\s+/g, ' ').trim();
 
-  // Creating form-encoded data
-  const params = new URLSearchParams();
-  params.append('nome', req.body.name || req.body.nome || 'Lead Site');
-  params.append('email', req.body.email || 'lead@site.com.br');
-  params.append('telefone', req.body.whatsapp || req.body.phone || req.body.telefone || '');
-  params.append('mensagem', mensagemBody);
-  params.append('origem', 'Instagram DM');
-  // Adding the business identifier as a token/key
-  params.append('token_negocios', process.env.BUSINESS_TOKEN);
-  params.append('api_key', process.env.BUSINESS_TOKEN);
+  // Creating payload
+  const payload = {
+    nome: req.body.name || req.body.nome || 'Lead Site',
+    email: req.body.email || 'lead@site.com.br',
+    telefone: req.body.whatsapp || req.body.phone || req.body.telefone || '',
+    mensagem: mensagemBody,
+    origem: 'imobflux', // Using imobflux as origin to help with internal mapping
+    token_negocios: process.env.BUSINESS_TOKEN,
+    api_key: process.env.BUSINESS_TOKEN,
+    // Including additional fields directly in case the system maps them
+    intention: req.body.intention || req.body.objective || '',
+    budget: req.body.budget || '',
+    income: req.body.incomeValue || '',
+    investment: req.body.investmentAmount || '',
+    timeline: req.body.timeline || ''
+  };
 
   try {
-    // Send to both endpoints simultaneously
+    // Send to both endpoints simultaneously as JSON
     const [leadResponse, negociosResponse] = await Promise.all([
       fetch(LEAD_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       }),
       fetch(NEGOCIOS_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       })
     ]);
 
