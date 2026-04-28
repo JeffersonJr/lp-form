@@ -96,11 +96,19 @@ const Gatekeeper = ({ onComplete }) => {
     }
   };
 
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+  };
+
   const currentStep = steps[step];
 
   return (
-    <div className="max-w-2xl mx-auto px-6 py-12 md:py-24 min-h-screen flex flex-col">
+    <div className="max-w-2xl mx-auto px-6 py-6 md:py-12 min-h-screen flex flex-col">
       <header className="mb-12">
+        <img src="/logo.svg" alt="Logo" className="h-10 mb-8" />
         <h1 className="text-2xl font-bold text-brand-deepblue mb-2">Olá, que bom te ver por aqui!</h1>
         <p className="text-gray-500">Sou Dornelas Corretor, preparamos algo especial para você.</p>
       </header>
@@ -140,18 +148,40 @@ const Gatekeeper = ({ onComplete }) => {
 
             {currentStep.fields ? (
               <div className="space-y-6">
-                {currentStep.fields}
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Como podemos te chamar?</label>
+                    <input
+                      autoFocus
+                      type="text"
+                      placeholder="Seu nome completo"
+                      className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
+                      value={data.name}
+                      onChange={(e) => setData({ ...data, name: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Seu melhor contato (WhatsApp)</label>
+                    <input
+                      type="tel"
+                      placeholder="(00) 00000-0000"
+                      className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
+                      value={data.whatsapp}
+                      onChange={(e) => setData({ ...data, whatsapp: formatPhone(e.target.value) })}
+                    />
+                  </div>
+                </div>
                 <div className="pt-6">
                   <button
                     onClick={handleNext}
-                    disabled={!(data.name.length >= 3 && data.whatsapp.length >= 9)}
+                    disabled={!(data.name.length >= 3 && data.whatsapp.length >= 14)}
                     className="w-full py-5 bg-brand-deepblue hover:bg-brand-accent text-white rounded-xl font-bold text-lg shadow-2xl shadow-brand-deepblue/20 disabled:opacity-40 disabled:shadow-none transition-all active:scale-[0.98]"
                   >
                     Continuar para detalhes
                   </button>
-                  {!(data.name.length >= 3 && data.whatsapp.length >= 9) && (
+                  {!(data.name.length >= 3 && data.whatsapp.length >= 14) && (
                     <p className="text-center text-xs text-red-400 mt-4">
-                      Por favor, preencha seu nome e WhatsApp (com DDD) para continuar.
+                      Por favor, preencha seu nome e WhatsApp completo para continuar.
                     </p>
                   )}
                 </div>
@@ -186,8 +216,11 @@ const Gatekeeper = ({ onComplete }) => {
                 )}
                 <button
                   onClick={() => setStep(step - 1)}
-                  className="w-full py-2 text-gray-400 hover:text-blue-600 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 py-2 text-gray-400 hover:text-brand-deepblue transition-colors text-sm font-medium group"
                 >
+                  <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
                   Voltar para a pergunta anterior
                 </button>
               </div>
