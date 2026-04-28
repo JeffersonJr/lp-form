@@ -32,8 +32,8 @@ export default async function handler(req, res) {
   params.append('mensagem', mensagemBody);
   params.append('origem', 'Instagram DM');
   // Adding the business identifier as a token/key
-  params.append('token_negocios', '7e003c83-8a32-4e99-9834-bc010e826859');
-  params.append('api_key', '7e003c83-8a32-4e99-9834-bc010e826859');
+  params.append('token_negocios', process.env.BUSINESS_TOKEN);
+  params.append('api_key', process.env.BUSINESS_TOKEN);
 
   try {
     const response = await fetch(ENDPOINT, {
