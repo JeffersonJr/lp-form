@@ -6,14 +6,16 @@ const Gatekeeper = ({ onComplete }) => {
   const [data, setData] = useState({
     name: '',
     whatsapp: '',
-    entry: '',
-    monthly: '',
-    timeline: '',
-    income: ''
+    intention: '',
+    cashValue: '',
+    incomeType: '',
+    incomeValue: '',
+    investmentAmount: '',
+    timeline: ''
   });
 
-  const steps = [
-    {
+  const getSteps = () => {
+    const contactStep = {
       question: "Confirme seus dados de contato",
       fields: (
         <div className="space-y-6">
@@ -35,51 +37,99 @@ const Gatekeeper = ({ onComplete }) => {
               placeholder="(00) 00000-0000"
               className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
               value={data.whatsapp}
-              onChange={(e) => setData({ ...data, whatsapp: e.target.value })}
+              onChange={(e) => setData({ ...data, whatsapp: formatPhone(e.target.value) })}
             />
           </div>
         </div>
       ),
-    },
-    {
-      question: "Quanto você consegue dar de entrada hoje?",
+    };
+
+    const intentionStep = {
+      question: "Sua intenção de compra é à vista ou financiada?",
       options: [
-        { label: "Ainda não tenho entrada", value: "Sem entrada" },
-        { label: "Até R$ 5 mil", value: "Até R$5 mil" },
-        { label: "R$ 10 mil ou mais", value: "R$10 mil+" },
-        { label: "Pretendo usar meu FGTS", value: "Tenho FGTS" }
+        { label: "À vista", value: "À vista" },
+        { label: "Financiada", value: "Financiada" }
       ],
-      key: 'entry'
-    },
-    {
-      question: "Qual o valor de parcela mensal que ficaria confortável?",
+      key: 'intention'
+    };
+
+    const incomeTypeStep = {
+      question: "Como é sua renda?",
+      subtitle: "Selecione a forma de comprovação",
       options: [
-        { label: "Até R$ 1.000", value: "Até R$1.000" },
-        { label: "Até R$ 1.500", value: "Até R$1.500" },
-        { label: "R$ 2.000 ou mais", value: "R$2.000+" }
+        { label: "Comprovada (CLT ou Imposto de Renda)", value: "Comprovada" },
+        { label: "Autônomo (Apenas movimentação bancária)", value: "Autônomo" }
       ],
-      key: 'monthly'
-    },
-    {
-      question: "Quando você pretende realizar a compra?",
+      key: 'incomeType'
+    };
+
+    const incomeValueStep = {
+      question: "Qual renda familiar bruta aproximada?",
       options: [
-        { label: "Imediatamente", value: "Agora" },
-        { label: "Próximos 30 dias", value: "30 dias" },
-        { label: "Em até 3 meses", value: "3 meses" },
-        { label: "Estou apenas pesquisando", value: "Só pesquisando" }
+        { label: "Até R$ 2.400", value: "Até 2.400" },
+        { label: "Entre R$ 2.500 e R$ 6.000", value: "2.500 a 6.000" },
+        { label: "Entre R$ 6.000 e R$ 12.000", value: "6.000 a 12.000" },
+        { label: "Acima de R$ 12.000", value: "Acima 12.000" }
       ],
-      key: 'timeline'
-    },
-    {
-      question: "Qual a renda familiar aproximada?",
-      options: [
-        { label: "Até R$ 3 mil", value: "Até R$3 mil" },
-        { label: "Entre R$ 3 mil e R$ 5 mil", value: "R$3 mil a R$5 mil" },
-        { label: "Acima de R$ 5 mil", value: "R$5 mil+" }
-      ],
-      key: 'income'
+      key: 'incomeValue'
+    };
+
+    const investmentAmountStep = {
+      question: "Qual valor você possui disponível para investimento?",
+      subtitle: "Quanto teria para entrada e documentação?",
+      fields: (
+        <div className="space-y-2">
+          <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Valor disponível</label>
+          <input
+            autoFocus
+            type="text"
+            placeholder="R$ 0,00"
+            className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-2xl font-bold transition-all shadow-sm"
+            value={data.investmentAmount}
+            onChange={(e) => setData({ ...data, investmentAmount: formatCurrency(e.target.value) })}
+          />
+        </div>
+      ),
+      key: 'investmentAmount'
+    };
+
+    if (data.intention === 'À vista') {
+      return [
+        contactStep,
+        intentionStep,
+        {
+          question: "Até que valor você pretende investir à vista?",
+          fields: (
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Valor pretendido</label>
+              <input
+                autoFocus
+                type="text"
+                placeholder="R$ 0,00"
+                className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-2xl font-bold transition-all shadow-sm"
+                value={data.cashValue}
+                onChange={(e) => setData({ ...data, cashValue: formatCurrency(e.target.value) })}
+              />
+            </div>
+          ),
+          key: 'cashValue'
+        },
+        incomeTypeStep,
+        incomeValueStep,
+        investmentAmountStep
+      ];
     }
-  ];
+
+    return [
+      contactStep,
+      intentionStep,
+      incomeTypeStep,
+      incomeValueStep,
+      investmentAmountStep
+    ];
+  };
+
+  const steps = getSteps();
 
   const handleNext = () => {
     if (step < steps.length - 1) {
@@ -101,6 +151,18 @@ const Gatekeeper = ({ onComplete }) => {
     if (digits.length <= 2) return digits;
     if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+  };
+
+  const formatCurrency = (value) => {
+    const digits = value.replace(/\D/g, '');
+    if (!digits) return '';
+    const number = parseInt(digits, 10);
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(number);
   };
 
   const currentStep = steps[step];
@@ -145,44 +207,35 @@ const Gatekeeper = ({ onComplete }) => {
             <h2 className="text-3xl font-semibold leading-tight text-slate-800">
               {currentStep.question}
             </h2>
+            {currentStep.subtitle && (
+              <p className="text-gray-500 -mt-6">{currentStep.subtitle}</p>
+            )}
 
             {currentStep.fields ? (
               <div className="space-y-6">
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Como podemos te chamar?</label>
-                    <input
-                      autoFocus
-                      type="text"
-                      placeholder="Seu nome completo"
-                      className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
-                      value={data.name}
-                      onChange={(e) => setData({ ...data, name: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider">Seu melhor contato (WhatsApp)</label>
-                    <input
-                      type="tel"
-                      placeholder="(00) 00000-0000"
-                      className="w-full p-5 bg-gray-50 rounded-xl border-2 border-transparent focus:border-brand-deepblue focus:bg-white outline-none text-xl transition-all shadow-sm"
-                      value={data.whatsapp}
-                      onChange={(e) => setData({ ...data, whatsapp: formatPhone(e.target.value) })}
-                    />
-                  </div>
-                </div>
+                {currentStep.fields}
                 <div className="pt-6">
                   <button
                     onClick={handleNext}
-                    disabled={!(data.name.length >= 3 && data.whatsapp.length >= 14)}
-                    className="w-full py-5 bg-brand-deepblue hover:bg-brand-accent text-white rounded-xl font-bold text-lg shadow-2xl shadow-brand-deepblue/20 disabled:opacity-40 disabled:shadow-none transition-all active:scale-[0.98]"
+                    disabled={
+                      (step === 0 && (!data.name || data.whatsapp.length < 14)) ||
+                      (currentStep.key === 'cashValue' && !data.cashValue) ||
+                      (currentStep.key === 'investmentAmount' && !data.investmentAmount)
+                    }
+                    className="w-full py-5 bg-brand-deepblue text-white rounded-xl font-bold text-lg shadow-xl shadow-blue-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:grayscale disabled:scale-100"
                   >
-                    Próximo passo
+                    {step === steps.length - 1 ? 'Ver Detalhes do Imóvel' : 'Próximo passo'}
                   </button>
-                  {!(data.name.length >= 3 && data.whatsapp.length >= 14) && (
-                    <p className="text-center text-xs text-red-400 mt-4">
-                      Por favor, preencha seu nome e WhatsApp completo para continuar.
-                    </p>
+                  {step > 0 && (
+                    <button
+                      onClick={() => setStep(step - 1)}
+                      className="flex items-center gap-2 py-2 text-gray-400 hover:text-brand-deepblue transition-colors text-sm font-medium group mt-4 w-full justify-start"
+                    >
+                      <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                      </svg>
+                      Voltar
+                    </button>
                   )}
                 </div>
               </div>
@@ -216,7 +269,7 @@ const Gatekeeper = ({ onComplete }) => {
                 )}
                 <button
                   onClick={() => setStep(step - 1)}
-                  className="flex items-center gap-2 py-2 text-gray-400 hover:text-brand-deepblue transition-colors text-sm font-medium group"
+                  className="flex items-center gap-2 py-2 text-gray-400 hover:text-brand-deepblue transition-colors text-sm font-medium group w-full justify-start"
                 >
                   <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
