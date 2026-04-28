@@ -9,8 +9,7 @@ const StepForm = () => {
     budget: 5000000,
     features: [],
     name: '',
-    phone: '',
-    email: ''
+    phone: ''
   });
 
   const nextStep = () => setStep(s => s + 1);
@@ -39,13 +38,6 @@ const StepForm = () => {
       subtitle: "Selecione a finalidade do imóvel",
       content: (
         <div className="mt-8 space-y-6">
-          <input
-            type="email"
-            placeholder="Seu melhor e-mail"
-            className="input-field"
-            value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
-          />
           <div className="grid grid-cols-2 gap-4">
             <button
               onClick={() => { 

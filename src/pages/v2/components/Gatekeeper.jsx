@@ -7,7 +7,6 @@ const Gatekeeper = ({ onComplete }) => {
   const [data, setData] = useState({
     name: '',
     whatsapp: '',
-    email: '',
     intention: '',
     cashValue: '',
     incomeType: '',
@@ -240,7 +239,7 @@ const Gatekeeper = ({ onComplete }) => {
                   <button
                     onClick={handleNext}
                     disabled={
-                      (step === 0 && (!data.name || data.whatsapp.length < 14 || !data.email)) ||
+                      (step === 0 && (!data.name || data.whatsapp.length < 14)) ||
                       (currentStep.key === 'cashValue' && !data.cashValue) ||
                       (currentStep.key === 'investmentAmount' && !data.investmentAmount)
                     }
