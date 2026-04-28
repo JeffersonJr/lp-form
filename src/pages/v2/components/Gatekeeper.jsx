@@ -113,8 +113,16 @@ const Gatekeeper = ({ onComplete }) => {
           ),
           key: 'cashValue'
         },
-        incomeTypeStep,
-        incomeValueStep,
+        {
+          question: "Quando você pretende realizar a compra?",
+          options: [
+            { label: "Imediatamente", value: "Agora" },
+            { label: "Próximos 30 dias", value: "30 dias" },
+            { label: "Em até 3 meses", value: "3 meses" },
+            { label: "Estou apenas pesquisando", value: "Só pesquisando" }
+          ],
+          key: 'timeline'
+        },
         investmentAmountStep
       ];
     }
