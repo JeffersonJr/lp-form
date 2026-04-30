@@ -192,23 +192,17 @@ const Gatekeeper = ({ onComplete }) => {
         <p className="text-gray-500">Sou Dornelas Corretor, preparamos algo especial para você.</p>
       </header>
 
-      <div className="mb-12 aspect-video bg-gray-100 rounded-2xl overflow-hidden relative group cursor-pointer shadow-lg border border-gray-100">
-        <img
-          src="/thumb.png"
-          alt="Thumbnail Vídeo"
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-16 h-16 bg-brand-deepblue rounded-full flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform">
-            <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-        <div className="absolute bottom-4 left-4 bg-black/50 backdrop-blur-sm px-3 py-1 rounded text-white text-xs">
-          Dornelas Corretor explica o processo
-        </div>
+      <div className="mb-12 aspect-video bg-gray-100 rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+        <video
+          className="w-full h-full object-cover"
+          poster="/thumb.png"
+          controls
+          preload="none"
+          playsInline
+        >
+          <source src="/video lp.mp4" type="video/mp4" />
+          Seu navegador não suporta a reprodução de vídeo.
+        </video>
       </div>
 
       <div className="flex-1">
